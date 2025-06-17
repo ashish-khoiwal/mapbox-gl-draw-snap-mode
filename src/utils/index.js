@@ -53,7 +53,6 @@ export const createSnapList = (map, draw, currentFeature, getFeatures) => {
   }
 
   console.log("features", features);
-  debugger
 
   const snapList = [];
 
@@ -384,7 +383,7 @@ export const snap = (state, e) => {
   let lng = e.lngLat.lng;
   let lat = e.lngLat.lat;
 
-  console.log("snap", state, e);
+  console.log("snap", state);
 
   // Holding alt bypasses all snapping
   if (e.originalEvent.altKey) {
