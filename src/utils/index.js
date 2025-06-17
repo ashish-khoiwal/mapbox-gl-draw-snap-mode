@@ -381,6 +381,8 @@ export const snap = (state, e) => {
   let lng = e.lngLat.lng;
   let lat = e.lngLat.lat;
 
+  console.log("snap", state, e);
+
   // Holding alt bypasses all snapping
   if (e.originalEvent.altKey) {
     state.showVerticalSnapLine = false;
