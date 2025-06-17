@@ -1,66 +1,48 @@
 const webpack = require("webpack");
 const TerserPlugin = require("terser-webpack-plugin");
-const BundleAnalyzerPlugin =
-  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const path = require("path");
+
+const commonRules = [
+  {
+    test: /\.m?js$/,
+    exclude: /node_modules/,
+    use: {
+      loader: "babel-loader",
+      options: {
+        presets: ["@babel/preset-env"],
+      },
+    },
+  },
+];
+
+const commonOptimization = (isMinified) => ({
+  minimize: isMinified,
+  minimizer: isMinified ? [new TerserPlugin({ parallel: true })] : [],
+});
+
+const isDebug = process.env.DEBUG_BUILD === "true"; // Optional flag
 
 module.exports = [
   {
-    mode: "production",
+    name: "cjs-build",
+    mode: isDebug ? "development" : "production",
     entry: "./src/index.js",
-    devtool: "source-map",
+    devtool: "source-map", // enables mapping to src/
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "mapbox-gl-draw-snap-mode.cjs.js",
       library: "mapboxGlDrawSnapMode",
       libraryTarget: "umd",
       globalObject: "this",
-      // libraryExport: 'default',
     },
-    optimization: {
-      minimize: true,
-      minimizer: [new TerserPlugin({ parallel: true })],
-    },
-    // externals: [/^(@mapbox\/mapbox-gl-draw).*$/],
-    // externals: [
-    //   function ({ context, request }, callback) {
-    //     if (/^(@mapbox\/mapbox-gl-draw).*$/.test(request)) {
-    //       // Externalize to a commonjs module using the request path
-    //       return callback(null, {
-    //         root: "MapboxDraw",
-    //         commonjs: request,
-    //         commonjs2: request,
-    //       });
-    //     }
-
-    //     // Continue without externalizing the import
-    //     callback();
-    //   },
-    // ],
+    optimization: commonOptimization(!isDebug),
     module: {
-      rules: [
-        {
-          test: /\.m?js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: "babel-loader",
-            options: {
-              presets: ["@babel/preset-env"],
-            },
-          },
-        },
-      ],
+      rules: commonRules,
     },
-    plugins: [
-      // new BundleAnalyzerPlugin({
-      //   analyzerMode: "server",
-      //   generateStatsFile: true,
-      //   statsOptions: { source: false },
-      // }),
-    ],
   },
   {
-    mode: "production",
+    name: "esm-build",
+    mode: isDebug ? "development" : "production",
     entry: "./src/index.js",
     devtool: "source-map",
     output: {
@@ -70,23 +52,9 @@ module.exports = [
         type: "module",
       },
     },
-    optimization: {
-      minimize: true,
-      minimizer: [new TerserPlugin({ parallel: true })],
-    },
+    optimization: commonOptimization(!isDebug),
     module: {
-      rules: [
-        {
-          test: /\.m?js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: "babel-loader",
-            options: {
-              presets: ["@babel/preset-env"],
-            },
-          },
-        },
-      ],
+      rules: commonRules,
     },
     experiments: {
       outputModule: true,

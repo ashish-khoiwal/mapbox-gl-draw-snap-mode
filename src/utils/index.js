@@ -52,6 +52,9 @@ export const createSnapList = (map, draw, currentFeature, getFeatures) => {
     features = draw.getAll().features;
   }
 
+  console.log("features", features);
+  debugger
+
   const snapList = [];
 
   // Get current bbox as polygon
