@@ -52,8 +52,6 @@ export const createSnapList = (map, draw, currentFeature, getFeatures) => {
     features = draw.getAll().features;
   }
 
-  console.log("features", features);
-
   const snapList = [];
 
   // Get current bbox as polygon
@@ -382,8 +380,6 @@ const checkPrioritySnapping = (
 export const snap = (state, e) => {
   let lng = e.lngLat.lng;
   let lat = e.lngLat.lat;
-
-  console.log("snap", state);
 
   // Holding alt bypasses all snapping
   if (e.originalEvent.altKey) {
