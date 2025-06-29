@@ -29,9 +29,19 @@ SnapPolygonMode.onSetup = function (options) {
     getGuideFeature(IDS.HORIZONTAL_GUIDE)
   );
 
+  const snapPoint = this.newFeature({
+    type: geojsonTypes.FEATURE,
+    properties: {},
+    geometry: {
+      type: geojsonTypes.POINT,
+      coordinates: [],
+    },
+  });
+
   this.addFeature(polygon);
   this.addFeature(verticalGuide);
   this.addFeature(horizontalGuide);
+  this.addFeature(snapPoint);
 
   const selectedFeatures = this.getSelected();
   this.clearSelectedFeatures();
@@ -53,6 +63,7 @@ SnapPolygonMode.onSetup = function (options) {
     selectedFeatures,
     verticalGuide,
     horizontalGuide,
+    snapPoint,
   };
 
   /// Adding default options
@@ -122,6 +133,8 @@ SnapPolygonMode.onMouseMove = function (state, e) {
   state.polygon.updateCoordinate(`0.${state.currentVertexPosition}`, lng, lat);
   state.snappedLng = lng;
   state.snappedLat = lat;
+
+  state.snapPoint.updateCoordinate(`0.0`, lng, lat);
 
   if (
     state.lastVertex &&
