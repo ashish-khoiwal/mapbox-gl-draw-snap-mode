@@ -212,9 +212,7 @@ SnapPolygonMode.onKeyUp = function(state, e) {
   
   if (e.keyCode === 27) {
     console.log('escape key pressed');
-    this.deleteFeature([IDS.VERTICAL_GUIDE], { silent: true });
-    this.deleteFeature([IDS.HORIZONTAL_GUIDE], { silent: true });
-    this.deleteFeature([IDS.SNAP_POINT], { silent: true });
+    this.deleteFeature([IDS.VERTICAL_GUIDE, IDS.HORIZONTAL_GUIDE, IDS.SNAP_POINT], { silent: true });
   }
   DrawPolygon.onKeyUp.call(this, state, e);
 };
