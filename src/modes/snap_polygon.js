@@ -166,9 +166,9 @@ SnapPolygonMode.toDisplayFeatures = function (state, geojson, display) {
 
 // This is 'extending' DrawPolygon.onStop
 SnapPolygonMode.onStop = function (state) {
-  this.deleteFeature(IDS.VERTICAL_GUIDE, { silent: true });
-  this.deleteFeature(IDS.HORIZONTAL_GUIDE, { silent: true });
-  this.deleteFeature(IDS.SNAP_POINT, { silent: true });
+  this.deleteFeature([IDS.VERTICAL_GUIDE], { silent: true });
+  this.deleteFeature([IDS.HORIZONTAL_GUIDE], { silent: true });
+  this.deleteFeature([IDS.SNAP_POINT], { silent: true });
 
   // remove moveend callback
   this.map.off("moveend", state.moveendCallback);
@@ -206,5 +206,19 @@ SnapPolygonMode.onStop = function (state) {
   DrawPolygon.onStop.call(this, state);
   state.polygon.removeCoordinate = rc.bind(state.polygon);
 };
+
+SnapPolygonMode.onKeyUp = function(state, e) {
+  // if escape key is pressed, delete the guides and snap point
+  if (e.keyCode === 27) {
+    console.log('escape key pressed');
+    this.deleteFeature([IDS.VERTICAL_GUIDE], { silent: true });
+    this.deleteFeature([IDS.HORIZONTAL_GUIDE], { silent: true });
+    this.deleteFeature([IDS.SNAP_POINT], { silent: true });
+  }
+  DrawPolygon.onKeyUp.call(this, state, e);
+};
+
+
+
 
 export default SnapPolygonMode;
