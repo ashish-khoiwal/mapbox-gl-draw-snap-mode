@@ -26,10 +26,20 @@ SnapPointMode.onSetup = function (options) {
   const horizontalGuide = this.newFeature(
     getGuideFeature(IDS.HORIZONTAL_GUIDE)
   );
+  const snapPoint = this.newFeature({
+    id: IDS.SNAP_POINT,
+    type: geojsonTypes.FEATURE,
+    properties: {},
+    geometry: {
+      type: geojsonTypes.POINT,
+      coordinates: [],
+    },
+  });
 
   this.addFeature(point);
   this.addFeature(verticalGuide);
   this.addFeature(horizontalGuide);
+  this.addFeature(snapPoint);
 
   const selectedFeatures = this.getSelected();
   this.clearSelectedFeatures();
@@ -50,6 +60,7 @@ SnapPointMode.onSetup = function (options) {
     selectedFeatures,
     verticalGuide,
     horizontalGuide,
+    snapPoint,
   };
 
   state.options = this._ctx.options;
@@ -95,6 +106,8 @@ SnapPointMode.onMouseMove = function (state, e) {
   state.snappedLng = lng;
   state.snappedLat = lat;
 
+  state.snapPoint.updateCoordinate(`0`, lng, lat);
+
   if (
     state.lastVertex &&
     state.lastVertex[0] === lng &&
@@ -123,8 +136,7 @@ SnapPointMode.toDisplayFeatures = function (state, geojson, display) {
 
 // This is 'extending' DrawPoint.onStop
 SnapPointMode.onStop = function (state) {
-  this.deleteFeature(IDS.VERTICAL_GUIDE, { silent: true });
-  this.deleteFeature(IDS.HORIZONTAL_GUIDE, { silent: true });
+  this.deleteFeature([IDS.VERTICAL_GUIDE, IDS.HORIZONTAL_GUIDE, IDS.SNAP_POINT], { silent: true });
 
   // remove moveend callback
   this.map.off("moveend", state.moveendCallback);

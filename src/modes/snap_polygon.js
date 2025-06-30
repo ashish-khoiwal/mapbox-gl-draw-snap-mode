@@ -15,7 +15,6 @@ const DrawPolygon = MapboxDraw.modes.draw_polygon;
 const SnapPolygonMode = { ...DrawPolygon };
 
 SnapPolygonMode.onSetup = function (options) {
-  console.log('onSetup..............');
   const polygon = this.newFeature({
     type: geojsonTypes.FEATURE,
     properties: {},
@@ -205,13 +204,13 @@ SnapPolygonMode.onStop = function (state) {
   state.polygon.removeCoordinate = rc.bind(state.polygon);
 };
 
-SnapPolygonMode.onKeyUp = function(state, e) {
-  // if escape key is pressed, delete the guides and snap point
-  if (e.keyCode === 27) {
-    this.deleteFeature([IDS.VERTICAL_GUIDE, IDS.HORIZONTAL_GUIDE, IDS.SNAP_POINT], { silent: true });
-  }
-  DrawPolygon.onKeyUp.call(this, state, e);
-};
+// SnapPolygonMode.onKeyUp = function(state, e) {
+//   // if escape key is pressed, delete the guides and snap point
+//   if (e.keyCode === 27) {
+//     this.deleteFeature([IDS.VERTICAL_GUIDE, IDS.HORIZONTAL_GUIDE, IDS.SNAP_POINT], { silent: true });
+//   }
+//   DrawPolygon.onKeyUp.call(this, state, e);
+// };
 
 
 
