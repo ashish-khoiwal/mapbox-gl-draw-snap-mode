@@ -208,7 +208,6 @@ SnapPolygonMode.onStop = function (state) {
 
 SnapPolygonMode.onKeyUp = function(state, e) {
   // if escape key is pressed, delete the guides and snap point
-  console.log('onKeyUp..............');
   
   if (e.keyCode === 27) {
     console.log('escape key pressed');
