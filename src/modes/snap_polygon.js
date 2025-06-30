@@ -210,8 +210,40 @@ SnapPolygonMode.onKeyUp = function(state, e) {
   // if escape key is pressed, delete the guides and snap point
   
   if (e.keyCode === 27) {
-    console.log('escape key pressed');
-    this.deleteFeature([IDS.VERTICAL_GUIDE, IDS.HORIZONTAL_GUIDE, IDS.SNAP_POINT], { silent: true });
+    console.log('Attempting to delete features...');
+    
+    // Check if features exist before trying to delete
+    const verticalGuideExists = this.getFeature(IDS.VERTICAL_GUIDE);
+    const horizontalGuideExists = this.getFeature(IDS.HORIZONTAL_GUIDE);
+    const snapPointExists = this.getFeature(IDS.SNAP_POINT);
+    
+    console.log('Features exist:', {
+      verticalGuide: !!verticalGuideExists,
+      horizontalGuide: !!horizontalGuideExists,
+      snapPoint: !!snapPointExists
+    });
+    
+    // Try deleting individually first to see which one fails
+    try {
+      this.deleteFeature(IDS.VERTICAL_GUIDE, { silent: true });
+      console.log('Vertical guide deleted');
+    } catch (err) {
+      console.error('Failed to delete vertical guide:', err);
+    }
+    
+    try {
+      this.deleteFeature(IDS.HORIZONTAL_GUIDE, { silent: true });
+      console.log('Horizontal guide deleted');
+    } catch (err) {
+      console.error('Failed to delete horizontal guide:', err);
+    }
+    
+    try {
+      this.deleteFeature(IDS.SNAP_POINT, { silent: true });
+      console.log('Snap point deleted');
+    } catch (err) {
+      console.error('Failed to delete snap point:', err);
+    }
   }
   DrawPolygon.onKeyUp.call(this, state, e);
 };
