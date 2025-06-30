@@ -20,6 +20,7 @@ import {
 export const IDS = {
   VERTICAL_GUIDE: "VERTICAL_GUIDE",
   HORIZONTAL_GUIDE: "HORIZONTAL_GUIDE",
+  SNAP_POINT: "SNAP_POINT",
 };
 
 export const addPointToVertices = (

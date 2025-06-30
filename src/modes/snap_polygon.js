@@ -31,7 +31,9 @@ SnapPolygonMode.onSetup = function (options) {
 
   const snapPoint = this.newFeature({
     type: geojsonTypes.FEATURE,
-    properties: {},
+    properties: {
+      id: IDS.SNAP_POINT,
+    },
     geometry: {
       type: geojsonTypes.POINT,
       coordinates: [],
@@ -166,6 +168,7 @@ SnapPolygonMode.toDisplayFeatures = function (state, geojson, display) {
 SnapPolygonMode.onStop = function (state) {
   this.deleteFeature(IDS.VERTICAL_GUIDE, { silent: true });
   this.deleteFeature(IDS.HORIZONTAL_GUIDE, { silent: true });
+  this.deleteFeature(IDS.SNAP_POINT, { silent: true });
 
   // remove moveend callback
   this.map.off("moveend", state.moveendCallback);
