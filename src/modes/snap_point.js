@@ -26,20 +26,10 @@ SnapPointMode.onSetup = function (options) {
   const horizontalGuide = this.newFeature(
     getGuideFeature(IDS.HORIZONTAL_GUIDE)
   );
-  const snapPoint = this.newFeature({
-    id: IDS.SNAP_POINT,
-    type: geojsonTypes.FEATURE,
-    properties: {},
-    geometry: {
-      type: geojsonTypes.POINT,
-      coordinates: [],
-    },
-  });
 
   this.addFeature(point);
   this.addFeature(verticalGuide);
   this.addFeature(horizontalGuide);
-  this.addFeature(snapPoint);
 
   const selectedFeatures = this.getSelected();
   this.clearSelectedFeatures();
@@ -60,7 +50,6 @@ SnapPointMode.onSetup = function (options) {
     selectedFeatures,
     verticalGuide,
     horizontalGuide,
-    snapPoint,
   };
 
   state.options = this._ctx.options;
@@ -106,14 +95,6 @@ SnapPointMode.onMouseMove = function (state, e) {
   state.snappedLng = lng;
   state.snappedLat = lat;
 
-  // Debug: Check if snap point exists and update it
-  if (state.snapPoint) {
-    console.log('Updating snap point to:', lng, lat);
-    state.snapPoint.updateCoordinate(`0`, lng, lat);
-  } else {
-    console.log('Snap point not found in state');
-  }
-
   if (
     state.lastVertex &&
     state.lastVertex[0] === lng &&
@@ -142,22 +123,14 @@ SnapPointMode.toDisplayFeatures = function (state, geojson, display) {
 
 // This is 'extending' DrawPoint.onStop
 SnapPointMode.onStop = function (state) {
-  this.deleteFeature([IDS.VERTICAL_GUIDE, IDS.HORIZONTAL_GUIDE, IDS.SNAP_POINT], { silent: true });
+  this.deleteFeature(IDS.VERTICAL_GUIDE, { silent: true });
+  this.deleteFeature(IDS.HORIZONTAL_GUIDE, { silent: true });
 
   // remove moveend callback
   this.map.off("moveend", state.moveendCallback);
-  this.map.off("draw.snap.options_changed", state.optionsChangedCallback);
 
   // This relies on the the state of SnapPointMode having a 'point' prop
   DrawPoint.onStop.call(this, state);
-};
-
-SnapPointMode.onKeyUp = function(state, e) {
-  // if escape key is pressed, delete the guides and snap point
-  if (e.keyCode === 27) {
-    this.deleteFeature([IDS.VERTICAL_GUIDE, IDS.HORIZONTAL_GUIDE, IDS.SNAP_POINT], { silent: true });
-  }
-  DrawPoint.onKeyUp.call(this, state, e);
 };
 
 export default SnapPointMode;
