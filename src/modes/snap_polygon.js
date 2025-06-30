@@ -15,6 +15,7 @@ const DrawPolygon = MapboxDraw.modes.draw_polygon;
 const SnapPolygonMode = { ...DrawPolygon };
 
 SnapPolygonMode.onSetup = function (options) {
+  console.log('onSetup..............');
   const polygon = this.newFeature({
     type: geojsonTypes.FEATURE,
     properties: {},
