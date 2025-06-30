@@ -106,7 +106,13 @@ SnapPointMode.onMouseMove = function (state, e) {
   state.snappedLng = lng;
   state.snappedLat = lat;
 
-  state.snapPoint.updateCoordinate(`0`, lng, lat);
+  // Debug: Check if snap point exists and update it
+  if (state.snapPoint) {
+    console.log('Updating snap point to:', lng, lat);
+    state.snapPoint.updateCoordinate(`0`, lng, lat);
+  } else {
+    console.log('Snap point not found in state');
+  }
 
   if (
     state.lastVertex &&
@@ -140,9 +146,18 @@ SnapPointMode.onStop = function (state) {
 
   // remove moveend callback
   this.map.off("moveend", state.moveendCallback);
+  this.map.off("draw.snap.options_changed", state.optionsChangedCallback);
 
   // This relies on the the state of SnapPointMode having a 'point' prop
   DrawPoint.onStop.call(this, state);
+};
+
+SnapPointMode.onKeyUp = function(state, e) {
+  // if escape key is pressed, delete the guides and snap point
+  if (e.keyCode === 27) {
+    this.deleteFeature([IDS.VERTICAL_GUIDE, IDS.HORIZONTAL_GUIDE, IDS.SNAP_POINT], { silent: true });
+  }
+  DrawPoint.onKeyUp.call(this, state, e);
 };
 
 export default SnapPointMode;
