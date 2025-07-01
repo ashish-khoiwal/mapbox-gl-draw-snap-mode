@@ -42,7 +42,6 @@ export const addPointToVertices = (
 };
 
 export const createSnapList = (map, draw, currentFeature, getFeatures) => {
-  // Get all features
   let features = [];
 
   if (typeof getFeatures === "function") {
