@@ -1,6 +1,6 @@
 {
-  "name": "mapbox-gl-draw-snap-mode",
-  "version": "0.4.0",
+  "name": "mapbox-gl-draw-snap-mode-aidash",
+  "version": "0.4.1-beta",
   "description": "Snapping mode for mapbox-gl-draw",
   "main": "dist/mapbox-gl-draw-snap-mode.cjs.js",
   "module": "dist/mapbox-gl-draw-snap-mode.esm.js",
@@ -16,7 +16,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@turf/turf": "^7.1.0"
+    "@turf/turf": "^7.1.0",
+    "mapbox-gl-draw-passing-mode": "^2.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.7",

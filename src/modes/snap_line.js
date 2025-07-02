@@ -27,10 +27,20 @@ SnapLineMode.onSetup = function (options) {
   const horizontalGuide = this.newFeature(
     getGuideFeature(IDS.HORIZONTAL_GUIDE)
   );
+  const snapPoint = this.newFeature({
+    id: IDS.SNAP_POINT,
+    type: geojsonTypes.FEATURE,
+    properties: {},
+    geometry: {
+      type: geojsonTypes.POINT,
+      coordinates: [],
+    },
+  });
 
   this.addFeature(line);
   this.addFeature(verticalGuide);
   this.addFeature(horizontalGuide);
+  this.addFeature(snapPoint);
 
   const selectedFeatures = this.getSelected();
   this.clearSelectedFeatures();
@@ -52,6 +62,7 @@ SnapLineMode.onSetup = function (options) {
     selectedFeatures,
     verticalGuide,
     horizontalGuide,
+    snapPoint,
     direction: "forward", // expected by DrawLineString
   };
 
@@ -115,6 +126,8 @@ SnapLineMode.onClick = function (state) {
 SnapLineMode.onMouseMove = function (state, e) {
   const { lng, lat } = snap(state, e);
 
+  state.snapPoint.updateCoordinate(`0`, lng, lat);
+
   state.line.updateCoordinate(state.currentVertexPosition, lng, lat);
   state.snappedLng = lng;
   state.snappedLat = lat;
@@ -149,6 +162,7 @@ SnapLineMode.toDisplayFeatures = function (state, geojson, display) {
 SnapLineMode.onStop = function (state) {
   this.deleteFeature(IDS.VERTICAL_GUIDE, { silent: true });
   this.deleteFeature(IDS.HORIZONTAL_GUIDE, { silent: true });
+  this.deleteFeature(IDS.SNAP_POINT, { silent: true });
 
   // remove moveend callback
   this.map.off("moveend", state.moveendCallback);
