@@ -24,10 +24,10 @@ SnapPolygonMode.onSetup = function (options) {
     },
   });
 
-  const verticalGuide = this.newFeature(getGuideFeature(IDS.VERTICAL_GUIDE));
-  const horizontalGuide = this.newFeature(
-    getGuideFeature(IDS.HORIZONTAL_GUIDE)
-  );
+  // const verticalGuide = this.newFeature(getGuideFeature(IDS.VERTICAL_GUIDE));
+  // const horizontalGuide = this.newFeature(
+  //   getGuideFeature(IDS.HORIZONTAL_GUIDE)
+  // );
 
   const snapPoint = this.newFeature({
     id: IDS.SNAP_POINT,
@@ -40,8 +40,8 @@ SnapPolygonMode.onSetup = function (options) {
   });
 
   this.addFeature(polygon);
-  this.addFeature(verticalGuide);
-  this.addFeature(horizontalGuide);
+  // this.addFeature(verticalGuide);
+  // this.addFeature(horizontalGuide);
   this.addFeature(snapPoint);
 
   const selectedFeatures = this.getSelected();
@@ -62,8 +62,8 @@ SnapPolygonMode.onSetup = function (options) {
     vertices,
     snapList,
     selectedFeatures,
-    verticalGuide,
-    horizontalGuide,
+    // verticalGuide,
+    // horizontalGuide,
     snapPoint,
   };
 
@@ -165,7 +165,8 @@ SnapPolygonMode.toDisplayFeatures = function (state, geojson, display) {
 
 // This is 'extending' DrawPolygon.onStop
 SnapPolygonMode.onStop = function (state) {
-  this.deleteFeature([IDS.VERTICAL_GUIDE, IDS.HORIZONTAL_GUIDE, IDS.SNAP_POINT], { silent: true });
+  // this.deleteFeature([IDS.VERTICAL_GUIDE, IDS.HORIZONTAL_GUIDE, IDS.SNAP_POINT], { silent: true });
+  this.deleteFeature(IDS.SNAP_POINT, { silent: true });
 
   // remove moveend callback
   this.map.off("moveend", state.moveendCallback);
