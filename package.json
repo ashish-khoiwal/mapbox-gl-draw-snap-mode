@@ -1,6 +1,6 @@
 {
   "name": "mapbox-gl-draw-snap-mode-aidash",
-  "version": "0.4.1-beta",
+  "version": "0.4.2-beta",
   "description": "Snapping mode for mapbox-gl-draw",
   "main": "dist/mapbox-gl-draw-snap-mode.cjs.js",
   "module": "dist/mapbox-gl-draw-snap-mode.esm.js",
