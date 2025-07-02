@@ -42,6 +42,7 @@ export const addPointToVertices = (
 };
 
 export const createSnapList = (map, draw, currentFeature, getFeatures) => {
+  // Get all features
   let features = [];
 
   if (typeof getFeatures === "function") {
@@ -425,57 +426,55 @@ export const snap = (state, e) => {
   }
 
   let verticalPx, horizontalPx;
-  // if (state.options.guides) {
-  //   const nearestGuideline = getNearbyVertices(state.vertices, e.lngLat);
+  if (state.options.guides) {
+    const nearestGuideline = getNearbyVertices(state.vertices, e.lngLat);
 
-  //   verticalPx = nearestGuideline.verticalPx;
-  //   horizontalPx = nearestGuideline.horizontalPx;
+    verticalPx = nearestGuideline.verticalPx;
+    horizontalPx = nearestGuideline.horizontalPx;
 
-  //   if (verticalPx) {
-  //     // Draw a line from top to bottom
+    if (verticalPx) {
+      // Draw a line from top to bottom
 
-  //     const lngLatTop = { lng: verticalPx, lat: e.lngLat.lat + 10 };
-  //     const lngLatBottom = { lng: verticalPx, lat: e.lngLat.lat - 10 };
+      const lngLatTop = { lng: verticalPx, lat: e.lngLat.lat + 10 };
+      const lngLatBottom = { lng: verticalPx, lat: e.lngLat.lat - 10 };
 
-  //     state.verticalGuide.updateCoordinate(0, lngLatTop.lng, lngLatTop.lat);
-  //     state.verticalGuide.updateCoordinate(
-  //       1,
-  //       lngLatBottom.lng,
-  //       lngLatBottom.lat
-  //     );
-  //   }
+      state.verticalGuide.updateCoordinate(0, lngLatTop.lng, lngLatTop.lat);
+      state.verticalGuide.updateCoordinate(
+        1,
+        lngLatBottom.lng,
+        lngLatBottom.lat
+      );
+    }
 
-  //   if (horizontalPx) {
-  //     // Draw a line from left to right
+    if (horizontalPx) {
+      // Draw a line from left to right
 
-  //     const lngLatTop = { lng: e.lngLat.lng + 10, lat: horizontalPx };
-  //     const lngLatBottom = { lng: e.lngLat.lng - 10, lat: horizontalPx };
+      const lngLatTop = { lng: e.lngLat.lng + 10, lat: horizontalPx };
+      const lngLatBottom = { lng: e.lngLat.lng - 10, lat: horizontalPx };
 
-  //     state.horizontalGuide.updateCoordinate(0, lngLatTop.lng, lngLatTop.lat);
-  //     state.horizontalGuide.updateCoordinate(
-  //       1,
-  //       lngLatBottom.lng,
-  //       lngLatBottom.lat
-  //     );
-  //   }
+      state.horizontalGuide.updateCoordinate(0, lngLatTop.lng, lngLatTop.lat);
+      state.horizontalGuide.updateCoordinate(
+        1,
+        lngLatBottom.lng,
+        lngLatBottom.lat
+      );
+    }
 
-  //   state.showVerticalSnapLine = !!verticalPx;
-  //   state.showHorizontalSnapLine = !!horizontalPx;
-  // }
+    state.showVerticalSnapLine = !!verticalPx;
+    state.showHorizontalSnapLine = !!horizontalPx;
+  }
 
   if (closestLayer && closestLayer.distance * 1000 < minDistance) {
     return snapLatLng;
-  } 
-  // else if (verticalPx || horizontalPx) {
-  //   if (verticalPx) {
-  //     lng = verticalPx;
-  //   }
-  //   if (horizontalPx) {
-  //     lat = horizontalPx;
-  //   }
-  //   return { lng, lat };
-  // } 
-  else {
+  } else if (verticalPx || horizontalPx) {
+    if (verticalPx) {
+      lng = verticalPx;
+    }
+    if (horizontalPx) {
+      lat = horizontalPx;
+    }
+    return { lng, lat };
+  } else {
     return { lng, lat };
   }
 };
